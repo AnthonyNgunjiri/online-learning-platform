@@ -1,0 +1,48 @@
+:root {
+  --text-color: #fffae6;
+  --first-color: #ff9f66;
+  --second-color: #ff5f00;
+  --third-color: #002379;
+  --my-font: "Poppins", sans-serif;
+  --my-style: normal;
+}
+
+.main-nav {
+  background-color: var(--second-color);
+  margin: auto;
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  color: var(--text-color);
+  height: 10vh;
+}
+.main-nav a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.li {
+  list-style: none;
+  
+  
+}
+
+.li a {
+  text-decoration: none;
+  color: var(--text-color);
+  
+}
+
+#list {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  align-items: center;
+  border: 2px solid #002379;
+  object-fit: contain;
+}

@@ -1,0 +1,320 @@
+// client/src/components/UserProgress.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const UserProgress = ({ userId, courseId }) => {
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const fetchProgress = async () => {
+            const response = await axios.post('/api/progress/get', { user_id: userId, course_id: courseId });
+            setProgress(response.data.progress);
+        };
+        fetchProgress();
+    }, [userId, courseId]);
+
+    const handleUpdate = async (newProgress) => {
+        const response = await axios.put('/api/progress/update', { user_id: userId, course_id: courseId, progress: newProgress });
+        setProgress(response.data.progress);
+    };
+
+    return (
+        <div>
+            <h3>Progress: {progress}%</h3>
+            <button onClick={() => handleUpdate(progress + 10)}>Increase Progress</button>
+        </div>
+    );
+};
+
+export default UserProgress;
+
+// client/src/components/AddCourse.js
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const AddCourse = () => {
+    const [formData, setFormData] = useState({ title: '', description: '', content: '' });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await axios.post('/api/courses', formData);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input name="title" onChange={handleChange} value={formData.title} placeholder="Title" />
+            <textarea name="description" onChange={handleChange} value={formData.description} placeholder="Description" />
+            <textarea name="content" onChange={handleChange} value={formData.content} placeholder="Content" />
+            <button type="submit">Add Course</button>
+        </form>
+    );
+};
+
+export default AddCourse;
+// client/src/components/CourseList.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const CourseList = () => {
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            const response = await axios.get('/api/courses');
+            setCourses(response.data);
+        };
+        fetchCourses();
+    }, []);
+
+    return (
+        <div>
+            {courses.map(course => (
+                <div key={course.id}>
+                    <h3>{course.title}</h3>
+                    <p>{course.description}</p>
+                    <p>{course.content}</p>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default CourseList;
+// server/routes/progressRoutes.js
+const express = require('express');
+const { getProgress, updateProgress } = require('../controllers/progressController');
+const router = express.Router();
+
+router.post('/get', getProgress);
+router.put('/update', updateProgress);
+
+module.exports = router;
+// server/controllers/progressController.js
+const pool = require('../db');
+
+exports.getProgress = async (req, res) => {
+    const { user_id, course_id } = req.body;
+    const result = await pool.query(
+        'SELECT * FROM progress WHERE user_id = $1 AND course_id = $2',
+        [user_id, course_id]
+    );
+    res.json(result.rows[0]);
+};
+
+exports.updateProgress = async (req, res) => {
+    const { user_id, course_id, progress } = req.body;
+    const result = await pool.query(
+        'UPDATE progress SET progress = $1 WHERE user_id = $2 AND course_id = $3 RETURNING *',
+        [progress, user_id, course_id]
+    );
+    res.json(result.rows[0]);
+};
+// server/controllers/courseController.js
+const pool = require('../db');
+
+exports.getCourses = async (req, res) => {
+    const result = await pool.query('SELECT * FROM courses');
+    res.json(result.rows);
+};
+
+exports.addCourse = async (req, res) => {
+    const { title, description, content } = req.body;
+    const result = await pool.query(
+        'INSERT INTO courses (title, description, content) VALUES ($1, $2, $3) RETURNING *',
+        [title, description, content]
+    );
+    res.json(result.rows[0]);
+};
+
+exports.updateCourse = async (req, res) => {
+    const { id, title, description, content } = req.body;
+    const result = await pool.query(
+        'UPDATE courses SET title = $1, description = $2, content = $3 WHERE id = $4 RETURNING *',
+        [title, description, content, id]
+    );
+    res.json(result.rows[0]);
+};
+
+exports.deleteCourse = async (req, res) => {
+    const { id } = req.params;
+    await pool.query('DELETE FROM courses WHERE id = $1', [id]);
+    res.json({ message: 'Course deleted' });
+};
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
+import { api_secret } from "../utility/config";
+import { CourseContext } from "./CourseContext";
+import "./dash.css";
+
+const CourseDash = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const { courseData, setCourseData } = useContext(CourseContext);
+  const navigate = useNavigate();
+  const cloudName = "ddsgll0wa";
+  const preset = "beulah";
+
+  const handleUpload = async () => {
+    if (!courseData.image) return;
+
+    const payload = new FormData();
+    payload.append("file", courseData.image);
+    payload.append("upload_preset", preset);
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        payload
+      );
+      setCourseData((prevData) => ({
+        ...prevData,
+        imageurl: response.data.secure_url,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (formValues) => {
+    if (!courseData.imageurl) {
+      setError("Please upload an image first.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(false);
+      const response = await fetch(`${api_secret}/api/courses/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formValues,
+          avatarurl: courseData.imageurl,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        setError(errorData);
+        return;
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        navigate("/course");
+      } else {
+        setError(data.error);
+      }
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+    }),
+    onSubmit: (values) => {
+      setCourseData((prevData) => ({
+        ...prevData,
+        title: values.title,
+        description: values.description,
+      }));
+      handleSubmit(values);
+    },
+  });
+
+  return (
+    <section className="wrap">
+      <div className="main">
+        <div className="head">
+          <h1>Add Course</h1>
+        </div>
+        <hr />
+        <hr />
+        <form onSubmit={formik.handleSubmit}>
+          <div className="mult">
+            <div className="lab">
+              <button className="btn" onClick={handleUpload} type="button">
+                Upload Image
+              </button>
+
+              <input
+                name="image"
+                type="file"
+                id="image"
+                onChange={(e) =>
+                  setCourseData((prevData) => ({
+                    ...prevData,
+                    image: e.target.files[0],
+                  }))
+                }
+              />
+            </div>
+            <div className="lab">
+              <label htmlFor="title">Title</label>
+              <input
+                id="title"
+                type="text"
+                {...formik.getFieldProps("title")}
+              />
+              {formik.touched.title && formik.errors.title ? (
+                <div>{formik.errors.title}</div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="lab">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              {...formik.getFieldProps("description")}
+            />
+            {formik.touched.description && formik.errors.description ? (
+              <div>{formik.errors.description}</div>
+            ) : null}
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Please wait..." : "Add Course"}
+          </button>
+          <div className="log-form">
+            <p>
+              Would you like to explore our courses?
+              <Link to="/course">Explore here</Link>
+            </p>
+            <p>{error && error}</p>
+          </div>
+        </form>
+        <hr />
+        <hr />
+
+        {courseData.imageurl && (
+          <div className="course-display">
+            <h2>{courseData.title}</h2>
+            <p>{courseData.description}</p>
+            <img src={courseData.imageurl} alt="Course" id="img" />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default CourseDash;
