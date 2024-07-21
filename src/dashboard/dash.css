@@ -36,3 +36,16 @@
     width: 70%;
     margin-bottom: 12px;
  }
+
+ .code{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+     gap: 1.2rem; 
+    padding-top:1.2rem ;
+
+ }
+ .ico{
+    display: flex;
+    gap: 4px;
+ }

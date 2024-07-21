@@ -1,12 +1,34 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import "./courses.css";
 import node from "../../assets/col1.jpg";
+import { api_secret } from "../../utility/config";
 import Instructors from "../homepage/instructors";
 import { CourseContext } from "../../dashboard/CourseContext";
-import { useContext } from "react";
+import User from "../../dashboard/User";
+import React, { useContext,useState,useEffect } from "react";
+
 const Courses = () => {
   const { courseData, setCourseData } = useContext(CourseContext);
+  const [courses, setCourses] = useState([]);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await fetch(`${api_secret}/api/courses`);
+        console.log(response);
+        if (!response.ok) {
+          throw new error('Failed to fetch courses');
+        }
+        const result = await response.json();
+        setCourses(result);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   return (
     <section className="all">
@@ -106,27 +128,48 @@ const Courses = () => {
               </p>
             </div>
             {courseData.imageurl && (
-        <div className="cor">
-          <img src={courseData.imageurl} alt="Course" id="img" />
-          <section className="data">
-            <h3>{courseData.title}</h3>
-            <p>{courseData.description}</p>
-          </section>
-          <p>
-            <Link to="/course">Explore </Link>
-          </p>
-        </div>
-      )}
+              <div className="cor">
+                <img src={courseData.imageurl} alt="Course" id="img" />
+                <section className="data">
+                  <h3>{courseData.title}</h3>
+                  <p>{courseData.description}</p>
+                </section>
+                <p>
+                  <Link to="/course">Explore </Link>
+                </p>
+              </div>
+            )}
 
           </div>
+          <section className='pop'>
+    {courses.map((course) => (
+      <section key={course.id} className=''>
+          {course.avatarurl && ( 
+              <div className="cor">
+                <img src={course.avatarurl} alt="Course" id="img" />
+                <section className="data">
+                  <h3>{course.title}</h3>
+                  <p>{course.description}</p>
+                </section>
+                <p>
+                  <Link to="/course">Explore </Link>
+                </p>
+              </div>
+          )}
+            </section>
+          ))}
+          </section>
+    
         </section>
-       
       </div>
-     
+
       <hr />
       <hr />
       <section>
         <Instructors />
+      </section>
+      <section className="get">
+        <User />
       </section>
     </section>
   );

@@ -114,3 +114,7 @@ width:920px;
   justify-content: center;
   align-items: center;
  }
+ /* .col{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+ } */

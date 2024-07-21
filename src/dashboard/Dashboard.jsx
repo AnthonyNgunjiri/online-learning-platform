@@ -32,7 +32,7 @@ const Dashboard = () => {
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         payload
       );
-      setCourseData((prevData) => ({
+      setProfileData((prevData) => ({
         ...prevData,
         imageurl: response.data.secure_url,
       }));
@@ -82,6 +82,7 @@ const Dashboard = () => {
 
   const formik = useFormik({
     initialValues: {
+      title:"",
       FirstName: "",
       LastName:"",
       level: "",
@@ -90,6 +91,7 @@ const Dashboard = () => {
 
     },
     validationSchema: Yup.object({
+      title: Yup.string().required("Required"),
       FirstName: Yup.string().required("Required"),
       LastName: Yup.string().required("Required"),
       level: Yup.string().required("Please select a level"),
@@ -99,6 +101,7 @@ const Dashboard = () => {
     onSubmit: (values) => {
       setProfileData((prevData) => ({
         ...prevData,
+        title:values.title,
         FirstName: values.FirstName,
         LastName: values.LastName,
         level:values.level,
@@ -149,7 +152,7 @@ const Dashboard = () => {
                 type="file"
                 id="image"
                 onChange={(e) =>
-                  setCourseData((prevData) => ({
+                  setProfileData((prevData) => ({
                     ...prevData,
                     image: e.target.files[0],
                   }))
