@@ -3,6 +3,11 @@ import "./home.css";
 import { useContext } from "react";
 import instructor from "../../assets/col2.jpg";
 import { CourseContext } from "../../dashboard/CourseContext";
+import { FaFacebook } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa";
+import { FaSquareInstagram } from "react-icons/fa6";
+
 const instructors = () => {
 
 const { profileData, setProfileData } = useContext(CourseContext);
@@ -22,10 +27,14 @@ const { profileData, setProfileData } = useContext(CourseContext);
                   <p className="degree">Bachelor</p>
                 </span>
                 <span className="iconis">
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
+                  <div className="icons"><p className="ice"><FaFacebook /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareXTwitter /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaLinkedinIn /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareInstagram /></p>
+                  </div>
                 </span>
               </section>
             </div>
@@ -44,10 +53,14 @@ const { profileData, setProfileData } = useContext(CourseContext);
                   <p className="degree">Bachelor</p>
                 </span>
                 <span className="iconis">
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
+                <div className="icons"><p className="ice"><FaFacebook /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareXTwitter /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaLinkedinIn /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareInstagram /></p>
+                  </div>
                 </span>
               </section>
             </div>
@@ -66,10 +79,14 @@ const { profileData, setProfileData } = useContext(CourseContext);
                   <p className="degree">Bachelor</p>
                 </span>
                 <span className="iconis">
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
+                <div className="icons"><p className="ice"><FaFacebook /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareXTwitter /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaLinkedinIn /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareInstagram /></p>
+                  </div>
                 </span>
               </section>
             </div>
@@ -91,10 +108,14 @@ const { profileData, setProfileData } = useContext(CourseContext);
                   <p className="degree">{profileData.level}</p>
                 </span>
                 <span className="iconis">
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
-                  <div className="icons"></div>
+                <div className="icons"><p className="ice"><FaFacebook /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareXTwitter /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaLinkedinIn /></p>
+                  </div>
+                  <div className="icons"><p className="ice"><FaSquareInstagram /></p>
+                  </div>
                 </span>
               </section>
             </div>

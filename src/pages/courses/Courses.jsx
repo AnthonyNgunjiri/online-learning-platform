@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import "./courses.css";
 import node from "../../assets/col1.jpg";
@@ -6,7 +5,7 @@ import { api_secret } from "../../utility/config";
 import Instructors from "../homepage/instructors";
 import { CourseContext } from "../../dashboard/CourseContext";
 import User from "../../dashboard/User";
-import React, { useContext,useState,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 const Courses = () => {
   const { courseData, setCourseData } = useContext(CourseContext);
@@ -18,7 +17,7 @@ const Courses = () => {
         const response = await fetch(`${api_secret}/api/courses`);
         console.log(response);
         if (!response.ok) {
-          throw new error('Failed to fetch courses');
+          throw new error("Failed to fetch courses");
         }
         const result = await response.json();
         setCourses(result);
@@ -139,27 +138,25 @@ const Courses = () => {
                 </p>
               </div>
             )}
-
           </div>
-          <section className='pop'>
-    {courses.map((course) => (
-      <section key={course.id} className=''>
-          {course.avatarurl && ( 
-              <div className="cor">
-                <img src={course.avatarurl} alt="Course" id="img" />
-                <section className="data">
-                  <h3>{course.title}</h3>
-                  <p>{course.description}</p>
-                </section>
-                <p>
-                  <Link to="/course">Explore </Link>
-                </p>
-              </div>
-          )}
-            </section>
-          ))}
+          <section className="pop">
+            {courses.map((course) => (
+              <section key={course.id} className="">
+                {course.avatarurl && (
+                  <div className="cor">
+                    <img src={course.avatarurl} alt="Course" id="img" />
+                    <section className="data">
+                      <h3>{course.title}</h3>
+                      <p>{course.description}</p>
+                    </section>
+                    <p>
+                      <Link to="/course">Explore </Link>
+                    </p>
+                  </div>
+                )}
+              </section>
+            ))}
           </section>
-    
         </section>
       </div>
 
