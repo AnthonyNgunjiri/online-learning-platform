@@ -10,6 +10,7 @@ import Courses from "./pages/courses/Courses.jsx";
 import Footer from "./pages/component/footer/Footer.jsx";
 import Dashboard from "./dashboard/Dashboard.jsx";
 import Course from "./pages/courses/Course.jsx";
+import PrivateRoute from "./pages/component/Authentication/privateRoute.jsx";
 
 const App = () => {
   return (
