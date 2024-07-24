@@ -37,10 +37,16 @@ const Courses = () => {
       <div className="main-course">
         <div className="sidebar">
           <h2 className="title">All Categories</h2>
-          <p className="item">Web development</p>
-          <p className="item">data science</p>
-          <p className="item">UI/UX design</p>
-          <p className="item">Programming languages</p>
+          
+              <p> Frontend Design</p>
+              <p>Backend  Design</p>
+              <p>Software Engineering</p>
+              <p>Coding Language</p>
+              <p>Computer Interaction</p>
+              <p>Machine learning</p>
+              <p>Cascading Sheet</p>
+         
+             
         </div>
         <section className="popular">
           <div className="pop">

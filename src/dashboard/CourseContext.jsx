@@ -18,6 +18,12 @@ const[profileData,setProfileData]=useState({
   bio:'',
  
 })
+const[userData,setUserData]=useState({
+  FirstName: '',
+  LastName: '',
+  EmailAddress:'',
+  PhoneNumber:'',
+})
   return (
     <CourseContext.Provider value={{ courseData, setCourseData ,profileData,setProfileData}}>
       {children}

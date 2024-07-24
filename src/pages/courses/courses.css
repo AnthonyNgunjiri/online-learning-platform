@@ -69,6 +69,7 @@ object-fit: cover;
 }
 .meet{
   display: flex;
+  flex-direction: column;
   /* gap: 1.7rem;  */
   margin: auto;
   gap : 1.2rem;
@@ -76,6 +77,9 @@ object-fit: cover;
  .minor{
    border:2px solid whitesmoke;  
    list-style: none;
+   gap:2rem;
+  
+   
 } 
 .minor ol{
   list-style-type: none;
@@ -83,7 +87,7 @@ object-fit: cover;
 .mycos{
   display: flex;
   list-style: none;
-  justify-content: space-around;
+  justify-content: space-between;
   text-transform: capitalize;
   align-items: center;
 
@@ -94,27 +98,63 @@ object-fit: cover;
 }
 .major{
   margin: auto;
-  width: 98%;
+  width: 80%;
   margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  
 
 }
+
+.heads{
+  display: flex;
+  text-transform:uppercase;
+}
 .imagery{
-width:920px;
+width:1090px;
 }
 .modules{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; 
+  margin: auto;
+  
 }
+
+.modules hr{
+  width: 100%;
+ background-color: var(--text-color);
+ border:1px solid whitesmoke;  
+
+}
+
 
  .data{
   display:flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
  }
  /* .col{
   display: grid;
   grid-template-columns: repeat(4,1fr);
  } */
+
+ #note{
+  color:cadetblue;
+ }
+
+ .section{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+ 
+ }
+
+ #lec{
+  display: flex;
+ justify-content: space-between;
+ align-items: baseline;
+ }

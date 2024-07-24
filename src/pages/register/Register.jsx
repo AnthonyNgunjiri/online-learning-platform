@@ -24,7 +24,7 @@ const Register = () => {
       const data = await response.json();
 
       if (data.success === true) {
-        navigate("/Signin")
+        navigate("/login")
       } else {
         setError(data.message);
       }

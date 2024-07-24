@@ -1,0 +1,25 @@
+.name{
+    display: flex;
+    gap: 8px;
+    place-content: center;
+    
+}
+
+.profile{
+    margin: auto;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    /* height: 100vh; */
+}
+
+.me{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid cadetblue;
+    height: auto;
+    align-items: center;
+    border-radius: 12px;
+    
+}
