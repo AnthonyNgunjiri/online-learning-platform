@@ -35,6 +35,16 @@ const Nav = () => {
           </Link>
         </li>
         <li
+          onClick={() => setmenu("admin")}
+          className="li"
+          id={menu === "admin" ? "list" : ""}
+        >
+          <Link to="/admin-dashboard">
+            {/* <FaHome /> */}
+            Admin{" "}
+          </Link>
+        </li>
+        <li
           onClick={() => setmenu("Courses")}
           className="li"
           id={menu === "Courses" ? "list" : ""}

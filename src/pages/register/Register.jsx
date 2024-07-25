@@ -1,19 +1,20 @@
-// import React, { useState } from "react";
-import "./register.css";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
- import { api_secret } from "../../utility/config";
+import { Link, useNavigate } from "react-router-dom";
+import { api_secret } from "../../utility/config";
+import "./register.css";
+
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (formValues) => {
+    console.log(formValues.role); // Check selected role
     try {
-      setLoading(true)
-      setError(false)
+      setLoading(true);
+      setError(false);
       const response = await fetch(`${api_secret}/api/users/register`, {
         method: "POST",
         headers: {
@@ -24,14 +25,14 @@ const Register = () => {
       const data = await response.json();
 
       if (data.success === true) {
-        navigate("/login")
+        navigate("/login");
       } else {
         setError(data.message);
       }
     } catch (e) {
       setError(e.message);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,6 +44,7 @@ const Register = () => {
       phoneNumber: "",
       password: "",
       confirmPassword: "",
+      role: "STUDENT", // Default role
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -63,6 +65,9 @@ const Register = () => {
         .required("Required"),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Required"),
+      role: Yup.string()
+        .oneOf(["ADMIN", "TUTOR", "STUDENT"], "Invalid role")
         .required("Required"),
     }),
     onSubmit: handleSubmit,
@@ -148,12 +153,23 @@ const Register = () => {
             ) : null}
           </div>
         </div>
+        <div className="lab">
+          <label htmlFor="role">Role</label>
+          <select id="role" {...formik.getFieldProps("role")}>
+            <option value="STUDENT">Student</option>
+            <option value="TUTOR">Tutor</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          {formik.touched.role && formik.errors.role ? (
+            <div>{formik.errors.role}</div>
+          ) : null}
+        </div>
         <button type="submit" disabled={loading}>
-          {loading ? "please wait.." : "Create  Account"}
+          {loading ? "Please wait..." : "Create Account"}
         </button>
         <div className="log-form">
           <p>
-            Already have an account?<Link to="/login">Sign in here</Link>
+            Already have an account? <Link to="/login">Sign in here</Link>
           </p>
           <p>{error && error}</p>
         </div>

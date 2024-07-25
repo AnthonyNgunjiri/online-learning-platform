@@ -25,8 +25,17 @@ const Login = () => {
       const data = await response.json();
 
       if (data.success === true) {
-        login(); 
-        navigate("/home");
+        login(data.role);
+        if (data.role === "ADMIN") {
+          console.log('Navigating to admin dashboard');
+          navigate("/admin-dashboard");
+        } else if (data.role === "TUTOR") {
+          console.log('Navigating to tutor dashboard');
+          navigate("/tutor-dashboard");
+        } else {
+          console.log('Navigating to home');
+          navigate("/home");
+        }
       } else {
         setError(data.message);
       }

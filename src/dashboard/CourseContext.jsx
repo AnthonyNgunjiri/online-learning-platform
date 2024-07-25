@@ -25,7 +25,7 @@ const[userData,setUserData]=useState({
   PhoneNumber:'',
 })
   return (
-    <CourseContext.Provider value={{ courseData, setCourseData ,profileData,setProfileData}}>
+    <CourseContext.Provider value={{ courseData, setCourseData ,profileData,setProfileData,userData,setUserData}}>
       {children}
     </CourseContext.Provider>
   );

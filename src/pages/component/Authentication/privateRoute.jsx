@@ -2,10 +2,14 @@ import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from './AuthContext.jsx';
 
-const PrivateRoute = ({ redirectTo }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+const PrivateRoute = ({ roles, redirectTo }) => {
+  const { isLoggedIn, role } = useContext(AuthContext);
 
-  return isLoggedIn ? <Outlet /> : <Navigate to={redirectTo} replace />;
+  if (!isLoggedIn || (roles && !roles.includes(role))) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

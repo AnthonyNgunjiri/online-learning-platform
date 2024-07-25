@@ -15,7 +15,11 @@
   display: flex;
   color: var(--text-color);
   height: 10vh;
+  position: sticky;
+  z-index: 99;
+  
 }
+
 .main-nav a {
   text-decoration: none;
   color: var(--text-color);
